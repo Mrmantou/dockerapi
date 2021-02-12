@@ -1,6 +1,6 @@
 # dockerapi
 
-this is a project to operate docker engine using Docker SDK for Python
+This is a project to operate docker engine using ``Docker SDK for Python``
 
 run the following package before start the project:
 ```shell
@@ -11,6 +11,9 @@ pip install docker
 pip install Flask
 ```
 
+```shell
+pip install flask-cors
+```
 
 shell file run.sh
 

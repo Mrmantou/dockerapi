@@ -1,3 +1,3 @@
 #!/bin/bash
 
-nohup python3 main.py >log.log 2>&1 &
+nohup python3 main.py >out.log 2>&1 &

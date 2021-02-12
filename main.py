@@ -1,8 +1,11 @@
-from flask import Flask
+from flask import Flask, request
+from flask_cors import *
 import docker
 import json
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
+
 client = docker.from_env()
 
 

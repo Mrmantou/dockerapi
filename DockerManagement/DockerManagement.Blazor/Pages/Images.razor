@@ -1,0 +1,44 @@
+﻿@page "/images"
+@inject HttpClient Http
+
+<h3>Images</h3>
+
+@if (imageItemDtos == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var image in imageItemDtos)
+            {
+                <tr>
+                    <td>@image.short_id</td>
+                    <td>@image.tag</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private ImageItemDto[] imageItemDtos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        imageItemDtos = await Http.GetFromJsonAsync<ImageItemDto[]>("http://8.129.84.137:8002/docker/images");
+    }
+
+    class ImageItemDto
+    {
+        public string short_id { get; set; }
+        public string tag { get; set; }
+    }
+}

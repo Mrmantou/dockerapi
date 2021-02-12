@@ -1,0 +1,60 @@
+﻿@page "/containers"
+@inject HttpClient Http
+
+<h3>Containers</h3>
+
+
+@if (containerItems == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var container in containerItems)
+            {
+                string id = container.short_id;
+                <tr>
+                    <td>@container.short_id</td>
+                    <td>@container.name</td>
+                    <td>@container.status</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick=@(async () => await StopContainerById(id))>Click me</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<span>@StopResult</span>
+
+@code {
+
+    private string StopResult = string.Empty;
+    private ContainerItemDto[] containerItems;
+    protected override async Task OnInitializedAsync()
+    {
+        containerItems = await Http.GetFromJsonAsync<ContainerItemDto[]>("http://8.129.84.137:8002/docker/containers");
+    }
+
+    private async Task StopContainerById(string id)
+    {
+        StopResult = await Http.GetStringAsync($"http://8.129.84.137:8002/docker/containers/stop/{id}");
+    }
+
+    class ContainerItemDto
+    {
+        public string short_id { get; set; }
+        public string name { get; set; }
+        public string status { get; set; }
+    }
+}

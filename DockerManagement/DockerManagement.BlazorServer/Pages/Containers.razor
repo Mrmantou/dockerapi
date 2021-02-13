@@ -1,5 +1,7 @@
 ﻿@page "/containers"
-@inject HttpClient Http
+@using DockerManagement.BlazorServer.Data
+@using DockerManagement.BlazorServer.Services
+@inject DockerService DockerService
 
 <h3>Containers</h3>
 
@@ -27,7 +29,7 @@ else
                     <td>@container.name</td>
                     <td>@container.status</td>
                     <td>
-                        <button class="btn btn-primary" @onclick=@(async () => await StopContainerById(id))>Click me</button>
+                        <button class="btn btn-primary btn-sm" @onclick=@(async () => await StopContainerById(id))> Stop </button>
                     </td>
                 </tr>
             }
@@ -41,20 +43,15 @@ else
 
     private string StopResult = string.Empty;
     private ContainerItemDto[] containerItems;
+
     protected override async Task OnInitializedAsync()
     {
-        containerItems = await Http.GetFromJsonAsync<ContainerItemDto[]>("http://8.129.84.137:8002/docker/containers");
+        containerItems = await DockerService.GetContainers();
     }
 
     private async Task StopContainerById(string id)
     {
-        StopResult = await Http.GetStringAsync($"http://8.129.84.137:8002/docker/containers/stop/{id}");
+        StopResult = await DockerService.StopContainer(id);
     }
 
-    class ContainerItemDto
-    {
-        public string short_id { get; set; }
-        public string name { get; set; }
-        public string status { get; set; }
-    }
 }

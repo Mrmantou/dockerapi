@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockerManagement.Blazor", "DockerManagement.Blazor\DockerManagement.Blazor.csproj", "{5BFEDAC0-9D9C-43A3-BC4A-FEDE2DAAE00C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockerManagement.BlazorServer", "DockerManagement.BlazorServer\DockerManagement.BlazorServer.csproj", "{BB135984-E089-4C14-8119-CEC878E9C12F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5BFEDAC0-9D9C-43A3-BC4A-FEDE2DAAE00C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5BFEDAC0-9D9C-43A3-BC4A-FEDE2DAAE00C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5BFEDAC0-9D9C-43A3-BC4A-FEDE2DAAE00C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5BFEDAC0-9D9C-43A3-BC4A-FEDE2DAAE00C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB135984-E089-4C14-8119-CEC878E9C12F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB135984-E089-4C14-8119-CEC878E9C12F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB135984-E089-4C14-8119-CEC878E9C12F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB135984-E089-4C14-8119-CEC878E9C12F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

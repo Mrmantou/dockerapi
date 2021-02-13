@@ -1,0 +1,69 @@
+﻿@page "/images"
+
+@using DockerManagement.BlazorServer.Data
+@using DockerManagement.BlazorServer.Services
+@inject DockerService DockerService
+
+<h3>Images</h3>
+
+@if (imageItemDtos == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Repository</th>
+                <th>Tag</th>
+                <th>Id</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var image in imageItemDtos)
+            {
+                var id = image.short_id.Split(":")[1];
+                var repository = "<none>";
+                var tag = "<none>";
+
+                if (image.tags.Length > 0)
+                {
+                    var array = image.tags[0].Split(':');
+                    repository = array[0];
+                    if (array.Length > 1)
+                    {
+                        tag = array[1];
+                    }
+                }
+
+                <tr>
+                    <td>@repository</td>
+                    <td>@tag</td>
+                    <td>@id</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" @onclick=@(async () => await RemoveImageById(id))> Remove </button>
+                    </td>
+                    @*<td>
+                            <button class="btn btn-primary btn-sm" @onclick=@(async () => await RemoveImageById(id))> Run </button>
+                        </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private string StatusMessage = string.Empty;
+    private ImageItemDto[] imageItemDtos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        imageItemDtos = await DockerService.GetImages();
+    }
+
+    private async Task RemoveImageById(string id)
+    {
+        StatusMessage = await DockerService.RemoveImageById(id);
+    }
+}

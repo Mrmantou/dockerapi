@@ -23,7 +23,7 @@ else
         <tbody>
             @foreach (var image in imageItemDtos)
             {
-                var id = image.short_id.Split(":")[1];
+                var id = image.short_id;
                 var repository = "<none>";
                 var tag = "<none>";
 

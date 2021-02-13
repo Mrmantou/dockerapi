@@ -17,6 +17,9 @@ else
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Image</th>
+                <th>Ports</th>
+                <th>Command</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -27,6 +30,9 @@ else
                 <tr>
                     <td>@container.short_id</td>
                     <td>@container.name</td>
+                    <td>@container.image</td>
+                    <td>@string.Join(",", container.ports)</td>
+                    <td>@container.command</td>
                     <td>@container.status</td>
                     <td>
                         <button class="btn btn-primary btn-sm" @onclick=@(async () => await StopContainerById(id))> Stop </button>

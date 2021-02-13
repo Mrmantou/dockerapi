@@ -9,8 +9,12 @@ namespace DockerManagement.BlazorServer.Data
     {
         public string short_id { get; set; }
         public string name { get; set; }
+        public string image { get; set; }
+        public string[] ports { get; set; }
+        public string command { get; set; }
         public string status { get; set; }
     }
+
 
     public class ImageItemDto
     {

@@ -27,8 +27,7 @@ def hello_world():
 def docker_containers():
     result = []
     for container in client.containers.list(all=True):
-        ports = [parse_port(key, value)
-                 for key, value in container.attrs['HostConfig']['PortBindings'].items()]
+        ports = parse_ports(container.attrs['HostConfig']['PortBindings'])
         command = parse_command(container.attrs['Config'])
         dto = {'short_id': container.short_id,
                'name': container.name,
@@ -49,6 +48,13 @@ def parse_port(key, value):
     return '/'.join(hostPorts) + '->' + key
 
 
+def parse_ports(portBindings):
+    if portBindings == None:
+        return []
+    else:
+        return [parse_port(key, value) for key, value in portBindings.items()]
+
+
 def parse_command(entrypoint):
     if entrypoint['Entrypoint'] == None:
         return ' '.join(entrypoint['Cmd'])
@@ -62,6 +68,20 @@ def docker_containers_stop(id_or_name):
     try:
         container = client.containers.get(id_or_name)
         container.stop()
+    except:
+        result = 'Error'
+    else:
+        result = 'OK'
+
+    return result
+
+
+@app.route('/docker/containers/start/<id_or_name>')
+def docker_containers_start(id_or_name):
+    result = 'Unhandle'
+    try:
+        container = client.containers.get(id_or_name)
+        container.start()
     except:
         result = 'Error'
     else:

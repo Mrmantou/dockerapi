@@ -12,7 +12,11 @@ namespace DockerManagement.BlazorServer.Data
         public string image { get; set; }
         public string[] ports { get; set; }
         public string command { get; set; }
+        public DateTime created { get; set; }
         public string status { get; set; }
+        public DateTime started { get; set; }
+        public DateTime ended { get; set; }
+        public int exitcode { get; set; }
     }
 
 

@@ -30,6 +30,11 @@ namespace DockerManagement.BlazorServer.Services
             return await client.GetStringAsync($"{baseUrl}docker/containers/stop/{idOrName}");
         }
 
+        public async Task<string> StartContainer(string idOrName)
+        {
+            return await client.GetStringAsync($"{baseUrl}docker/containers/start/{idOrName}");
+        }
+
         public async Task<ImageItemDto[]> GetImages()
         {
             return await client.GetFromJsonAsync<ImageItemDto[]>($"{baseUrl}docker/images");

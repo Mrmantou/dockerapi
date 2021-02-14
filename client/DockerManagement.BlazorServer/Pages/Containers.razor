@@ -1,6 +1,7 @@
 ﻿@page "/containers"
 @using DockerManagement.BlazorServer.Data
 @using DockerManagement.BlazorServer.Services
+@using System
 @inject DockerService DockerService
 
 <h3>Containers</h3>
@@ -19,23 +20,35 @@ else
                 <th>Name</th>
                 <th>Image</th>
                 <th>Ports</th>
+                <th>Created</th>
                 <th>Command</th>
                 <th>Status</th>
+                <th>Created</th>
+                <th>Started</th>
+                <th>Ended</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var container in containerItems)
             {
                 string id = container.short_id;
+
                 <tr>
                     <td>@container.short_id</td>
                     <td>@container.name</td>
                     <td>@container.image</td>
                     <td>@string.Join(",", container.ports)</td>
+                    <td>@container.created.ToString("yyyy-MM-dd hh:mm:ss")</td>
                     <td>@container.command</td>
-                    <td>@container.status</td>
+                    <td>@ParseStatus(container)</td>
+                    <td>@container.created</td>
+                    <td>@container.started</td>
+                    <td>@container.ended</td>
                     <td>
                         <button class="btn btn-primary btn-sm" @onclick=@(async () => await StopContainerById(id))> Stop </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" @onclick=@(async () => await StartContainerById(id))> Start </button>
                     </td>
                 </tr>
             }
@@ -58,6 +71,57 @@ else
     private async Task StopContainerById(string id)
     {
         StopResult = await DockerService.StopContainer(id);
+        await OnInitializedAsync();
+    }
+
+    private async Task StartContainerById(string id)
+    {
+        StopResult = await DockerService.StartContainer(id);
+        await OnInitializedAsync();
+    }
+
+    private string ParseStatus(ContainerItemDto container)
+    {
+        if (container.status == "running")
+        {
+            return $"Up {CalculateTimePeriod(container.started)}";
+        }
+        else if (container.status == "exited")
+        {
+            return $"Exited ({container.exitcode}) {CalculateTimePeriod(container.ended)}";
+        }
+        else
+        {
+            return container.status;
+        }
+    }
+
+    private string CalculateTimePeriod(DateTime start)
+    {
+        DateTime end = DateTime.UtcNow;
+
+        var diff = end - start;
+
+        if (diff.Days > 0)
+        {
+            return $"{diff.Days} day(s)";
+        }
+        else if (diff.Hours > 0)
+        {
+            return $"{diff.Hours} hour(s)";
+        }
+        else if (diff.Minutes > 0)
+        {
+            return $"{diff.Minutes} minute(s)";
+        }
+        else if (diff.Seconds > 0)
+        {
+            return $"{diff.Seconds} second(s)";
+        }
+        else
+        {
+            return "A mount";
+        }
     }
 
 }

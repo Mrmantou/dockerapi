@@ -65,5 +65,6 @@ else
     private async Task RemoveImageById(string id)
     {
         StatusMessage = await DockerService.RemoveImageById(id);
+        await OnInitializedAsync();
     }
 }

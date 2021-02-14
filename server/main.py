@@ -3,6 +3,7 @@ from flask_cors import *
 import docker
 import json
 import sys
+import time
 
 
 app = Flask(__name__)
@@ -33,9 +34,9 @@ def docker_containers():
                'name': container.name,
                'image': container.attrs['Config']['Image'],
                'ports': ports,
-               'started': container.attrs['State']['StartedAt'],
+               'created': parse_created(container.attrs['Created']),
                'command': command,
-               'status': container.status,
+               'status': parse_status(container),
                # 'attrs': container.attrs
                }
         result.append(dto)
@@ -60,6 +61,39 @@ def parse_command(entrypoint):
         return ' '.join(entrypoint['Cmd'])
     else:
         return ' '.join(entrypoint['Entrypoint'])
+
+
+def parse_status(container):
+    if container.status == 'running':
+        started = container.attrs['State']['StartedAt']
+        return 'Up ' + calculate_timeperiod(started)
+    elif container.status == 'exited':
+        ended = container.attrs['State']['FinishedAt']
+        exitcode = container.attrs['State']['ExitCode']
+        return 'Exited '+calculate_timeperiod(ended)+' ago'
+
+
+def parse_created(created):
+    return calculate_timeperiod(created)+'ago'
+
+
+def calculate_timeperiod(started):
+    start = time.strptime(started[:18], '%Y-%m-%dT%H:%M:%S')
+    end = time.localtime()
+    if end.tm_year-start.tm_year > 0:
+        return f'{(end.tm_year-start.tm_year)} year(s)'
+    elif end.tm_mon-start.tm_mon > 0:
+        return f'{(end.tm_mon-start.tm_mon)} month(s)'
+    elif end.tm_mday-start.tm_mday > 0:
+        return f'{(end.tm_mday-start.tm_mday)} day(s)'
+    elif end.tm_hour-start.tm_hour > 0:
+        return f'{(end.tm_hour-start.tm_hour)} hour(s)'
+    elif end.tm_min-start.tm_min > 0:
+        return f'{(end.tm_min-start.tm_min)} minute(s)'
+    elif end.tm_sec-start.tm_sec > 0:
+        return f'{(end.tm_sec-start.tm_sec)} second(s)'
+    else:
+        return 'A moument'
 
 
 @app.route('/docker/containers/stop/<id_or_name>')

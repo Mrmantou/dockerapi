@@ -23,9 +23,6 @@ else
                 <th>Created</th>
                 <th>Command</th>
                 <th>Status</th>
-                <th>Created</th>
-                <th>Started</th>
-                <th>Ended</th>
             </tr>
         </thead>
         <tbody>
@@ -38,12 +35,9 @@ else
                     <td>@container.name</td>
                     <td>@container.image</td>
                     <td>@string.Join(",", container.ports)</td>
-                    <td>@container.created.ToString("yyyy-MM-dd hh:mm:ss")</td>
-                    <td>@container.command</td>
-                    <td>@ParseStatus(container)</td>
                     <td>@container.created</td>
-                    <td>@container.started</td>
-                    <td>@container.ended</td>
+                    <td>@container.command</td>
+                    <td>@container.status</td>
                     <td>
                         <button class="btn btn-primary btn-sm" @onclick=@(async () => await StopContainerById(id))> Stop </button>
                     </td>
@@ -79,49 +73,4 @@ else
         StopResult = await DockerService.StartContainer(id);
         await OnInitializedAsync();
     }
-
-    private string ParseStatus(ContainerItemDto container)
-    {
-        if (container.status == "running")
-        {
-            return $"Up {CalculateTimePeriod(container.started)}";
-        }
-        else if (container.status == "exited")
-        {
-            return $"Exited ({container.exitcode}) {CalculateTimePeriod(container.ended)}";
-        }
-        else
-        {
-            return container.status;
-        }
-    }
-
-    private string CalculateTimePeriod(DateTime start)
-    {
-        DateTime end = DateTime.UtcNow;
-
-        var diff = end - start;
-
-        if (diff.Days > 0)
-        {
-            return $"{diff.Days} day(s)";
-        }
-        else if (diff.Hours > 0)
-        {
-            return $"{diff.Hours} hour(s)";
-        }
-        else if (diff.Minutes > 0)
-        {
-            return $"{diff.Minutes} minute(s)";
-        }
-        else if (diff.Seconds > 0)
-        {
-            return $"{diff.Seconds} second(s)";
-        }
-        else
-        {
-            return "A mount";
-        }
-    }
-
 }

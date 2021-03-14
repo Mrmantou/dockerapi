@@ -22,5 +22,7 @@ namespace DockerManagement.BlazorServer.Data
         public string id { get; set; }
         public string short_id { get; set; }
         public string[] tags { get; set; }
+        public string created { get; set; }
+        public string size { get; set; }
     }
 }

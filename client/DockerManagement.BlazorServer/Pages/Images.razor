@@ -17,7 +17,9 @@ else
             <tr>
                 <th>Repository</th>
                 <th>Tag</th>
-                <th>Id</th>
+                <th>Image Id</th>
+                <th>Created</th>
+                <th>Size</th>
             </tr>
         </thead>
         <tbody>
@@ -37,17 +39,19 @@ else
                     }
                 }
 
-                <tr>
-                    <td>@repository</td>
-                    <td>@tag</td>
-                    <td>@id</td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" @onclick=@(async () => await RemoveImageById(id))> Remove </button>
-                    </td>
-                    @*<td>
-                            <button class="btn btn-primary btn-sm" @onclick=@(async () => await RemoveImageById(id))> Run </button>
-                        </td>*@
-                </tr>
+            <tr>
+                <td>@repository</td>
+                <td>@tag</td>
+                <td>@id</td>
+                <td>@image.created</td>
+                <td>@image.size</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" @onclick=@(async () => await RemoveImageById(id))> Remove </button>
+                </td>
+                @*<td>
+            <button class="btn btn-primary btn-sm" @onclick=@(async () => await RemoveImageById(id))> Run </button>
+        </td>*@
+            </tr>
             }
         </tbody>
     </table>

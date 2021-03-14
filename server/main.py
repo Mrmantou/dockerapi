@@ -132,10 +132,23 @@ def docker_images():
     for image in client.images.list():
         dto = {'short_id': image.short_id[7:],
                'id': image.id[7:],
-               'tags': image.tags}
+               'tags': image.tags,
+               'created': parse_created(image.attrs['Created']),
+               'size': parse_size(image.attrs['Size']),
+               # 'attrs': image.attrs
+               }
         result.append(dto)
 
     return json.dumps(result)
+
+
+def parse_size(size):
+    if size >= 1000000000:
+        return f'{round(size/1000000000,2)}GB'
+    elif size >= 1000000:
+        return f'{round(size/1000000)}MB'
+    elif size >= 1000:
+        return f'{ round(size/1000, 1)}kB'
 
 
 @app.route('/docker/images/remove/<name>')

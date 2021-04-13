@@ -163,6 +163,7 @@ def docker_images_remove(name):
 
     return result
 
-
+'''
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=parse_start_port())
+'''

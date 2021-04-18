@@ -6,10 +6,10 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["DockerManagement.BlazorServer/DockerManagement.BlazorServer.csproj", "DockerManagement.BlazorServer/"]
-RUN dotnet restore "DockerManagement.BlazorServer/DockerManagement.BlazorServer.csproj"
+COPY ["client/DockerManagement.BlazorServer/DockerManagement.BlazorServer.csproj", "client/DockerManagement.BlazorServer/"]
+RUN dotnet restore "client/DockerManagement.BlazorServer/DockerManagement.BlazorServer.csproj"
 COPY . .
-WORKDIR "/src/DockerManagement.BlazorServer"
+WORKDIR "/src/client/DockerManagement.BlazorServer"
 RUN dotnet build "DockerManagement.BlazorServer.csproj" -c Release -o /app/build
 
 FROM build AS publish

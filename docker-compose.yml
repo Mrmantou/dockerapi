@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  dockermanagement.blazorserver:
+    image: ${DOCKER_REGISTRY-}dockermanagementblazorserver
+    build:
+      context: .
+      dockerfile: client/DockerManagement.BlazorServer/Dockerfile
+    depends_on:
+     - dockermanagement.api
+        
+
+  dockermanagement.api:
+    image: ${DOCKER_REGISTRY-}dockermanagementapi
+    build:
+      context: .
+      dockerfile: server/Dockerfile

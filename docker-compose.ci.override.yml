@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  dockermanagement.blazorserver:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 8002:80
+
+  dockermanagement.api:
+    ports:
+     - 4000:80
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock

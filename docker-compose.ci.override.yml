@@ -3,7 +3,7 @@ version: '3.4'
 services:
   dockermanagement.blazorserver:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - 8002:80
 
